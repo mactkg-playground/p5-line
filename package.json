@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "parcel index.html",
-    "build": "NODE_ENV=production parcel build index.html --dist-dir dist"
+    "build": "parcel build index.html --dist-dir docs"
   },
   "author": "mactkg <mactkg@gmail.com> (http://makerbox.net/)",
   "license": "ISC",
