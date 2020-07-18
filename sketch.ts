@@ -142,41 +142,57 @@ const calcVector = (p1: PPoint, p2: PPoint) => {
   return {x: x / l, y: y / l};
 }
 
+const calcPoint = (t: number, f: number = 0): PPoint => {
+  const x = t * 20 + 20 + Math.sin(t/6 * Math.PI + f / 60) * 40;
+  const y = Math.sin(t/6 * Math.PI + f / 60) * 80 + 80;
+  const p = Math.abs(Math.sin(t/8 * Math.PI + 0.4 + f / 20)) * 0.8 + 0.2;
+
+  return { x, y, p };
+}
+
 /**
  * @param {p5} p
  */
 export const sketch = (p: p5) => {
   let l: Line;
+  let state: { move: boolean, debug: boolean } = { move: false, debug: false };
 
   p.setup = () => {
     let po: PPoint[] = [];
     for (let i = 0; i < 10; i++) {
-      po[i] = {x: i * 20 + 20, y: Math.sin(i / 6 * Math.PI) * 80 + 80, p: Math.cos(i / 8 * Math.PI + 0.4)};
-
+      po[i] = calcPoint(i);
     }
     l = new Line(po, p)
 
-    p.createCanvas(600, 600);
+    p.createCanvas(800, 800);
     p.noFill();
   };
 
   p.draw = () => {
-    let po: PPoint[] = [];
-    let t = p.frameCount / 30 * p.PI / 6;
-    for (let i = 0; i < 10; i++) {
-      po[i] = {x: i * 20 + 20, y: Math.sin(i / 6 * Math.PI + t) * 80 + 80, p: Math.cos(i / 8 * Math.PI + 0.4 + t * p.mouseX / 10)};
+    p.translate(100, 100);
+    p.scale(1.5);
+
+    if(state.move) {
+      let po: PPoint[] = [];
+      for (let i = 0; i < 10; i++) {
+        po[i] = calcPoint(i, p.frameCount);
+      }
+      l.setPoints(po, p)
     }
-    l.setPoints(po, p);
 
     p.background(255);
     l.draw(p);
-    l.drawDebug(p);
+    state.debug ? l.drawDebug(p) : null;
   };
 
   p.keyPressed = () => {
     // Export sketch's canvas to file
     if (p.keyCode === 80) {
       p.saveCanvas("sketch", "png");
+    } else if (p.key === 'm') {
+      state.move = !state.move;
+    } else if (p.key === 's') {
+      state.debug = !state.debug;
     }
   };
 };

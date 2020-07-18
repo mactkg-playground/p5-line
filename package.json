@@ -2,16 +2,15 @@
   "name": "p5-line",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "NODE_ENV=production parcel build index.html --dist-dir dist"
   },
   "author": "mactkg <mactkg@gmail.com> (http://makerbox.net/)",
   "license": "ISC",
   "devDependencies": {
     "@types/p5": "^0.9.0",
-    "parcel": "^2.0.0-alpha.3.2",
+    "parcel": "^2.0.0-beta.1",
     "typescript": "^3.8.3"
   },
   "dependencies": {
